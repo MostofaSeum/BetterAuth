@@ -1,9 +1,14 @@
 "use client";
 import { signOut } from "@/lib/actions/auth-actions";
+import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function DashboardClientPage() {
+
+import { Session, User } from "better-auth";
+
+export default function DashboardClientPage({session}: {session: { session: Session; user: User }}) {
+  const user = session.user;
   const router = useRouter();
   const handleSignOut = async () => {
     await signOut();
@@ -34,8 +39,8 @@ export default function DashboardClientPage() {
                     }
                   />
                   <div className="text-sm">
-                    <p className="text-gray-900 font-medium">John Doe</p>
-                    <p className="text-gray-500">email@gmail.com</p>
+                    <p className="text-gray-900 font-medium">{user.name}</p>
+                    <p className="text-gray-500">{user.email}</p>
                   </div>
                 </div>
                 <button
@@ -65,13 +70,13 @@ export default function DashboardClientPage() {
                 </div>
                 <div>
                   <span className="font-medium text-blue-700">User ID:</span>
-                  <span className="ml-2 text-blue-600">1234566</span>
+                  <span className="ml-2 text-blue-600">{user.id}</span>
                 </div>
                 <div>
                   <span className="font-medium text-blue-700">
                     Email Verified:
                   </span>
-                  <span className="ml-2 text-blue-600">Yes</span>
+                  <span className="ml-2 text-blue-600">{user.emailVerified ? "Yes" : "No"}</span>
                 </div>
               </div>
             </div>
